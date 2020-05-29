@@ -5,11 +5,10 @@ part 'home_controller.g.dart';
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
+  
   @observable
-  int value = 0;
+  bool visible = false;
 
   @action
-  void increment() {
-    value++;
-  }
+  isVisible() => visible = !visible;
 }

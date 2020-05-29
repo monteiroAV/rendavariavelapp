@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:renda_variavel/app/modules/home/visaoGeral.dart';
 
-import 'package:renda_variavel/app/modules/pages/dadosPage.dart';
-import 'package:renda_variavel/app/modules/pages/infoPage.dart';
-import 'package:renda_variavel/app/modules/pages/relatorioCot.dart';
 
-import 'package:renda_variavel/app/modules/pages/volatPage.dart';
-import 'package:renda_variavel/app/modules/teste/teste_module.dart';
+import '../dados/dados.page.dart';
 
 import 'home_controller.dart';
+import 'pages/infoPage.dart';
+import 'pages/relatorioCot.dart';
+import 'pages/visaoGeral.dart';
+import 'pages/volatPage.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -34,7 +34,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    _pageController = PageController(initialPage: 0);
   }
 
   @override
@@ -86,8 +86,22 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
-          
           backgroundColor: Colors.black,
+          body: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                return selectedindex = index;
+              });
+            },
+            children: <Widget>[
+              VisaoGeral(),
+              DadosPage(),
+              RelatCot(),
+              VolatPage(),
+              InfoPage()
+            ],
+          ),
           bottomNavigationBar: Container(
             height: 56,
             padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
@@ -101,8 +115,12 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                 var itemIndex = items.indexOf(item);
                 return GestureDetector(
                   onTap: () {
-                    setState(() => selectedindex = itemIndex);
-                    
+                    setState(() {
+                      _pageController.jumpToPage(itemIndex);
+                    });
+                    setState(() {
+                      selectedindex = itemIndex;
+                    });
                   },
                   child: _buildItem(item, selectedindex == itemIndex),
                 );
@@ -116,7 +134,6 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
 class NavigationItem {
   final Icon icon;
   final Text title;
-  
 
   NavigationItem(this.icon, this.title);
 }

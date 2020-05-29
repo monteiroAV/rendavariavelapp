@@ -22,6 +22,7 @@ dependencies:
   mobx: ^1.2.1
   flutter_modular: ^1.2.5+1
   bottom_navy_bar: ^5.4.0
+  ant_icons: any
   flutter:
     sdk: flutter
 
